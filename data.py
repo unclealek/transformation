@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import random
 from datetime import datetime, timedelta
-
 from faker import Faker
 
 fake = Faker()
@@ -10,6 +9,9 @@ fake = Faker()
 def generate_messy_data(rows=100):
     regions = ['North', 'South', 'East', 'West', 'Central', 'Unknown']
     records = []
+
+    batch_id = f"batch_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    ingestion_timestamp = datetime.now()
 
     for i in range(1, rows + 1):
         first_name = fake.first_name()
@@ -26,7 +28,9 @@ def generate_messy_data(rows=100):
             'base_price': round(random.uniform(10.0, 500.0), 2),
             'jan_sales': random.randint(0, 1000),
             'feb_sales': random.randint(0, 1000),
-            'user_rating': random.randint(1, 5)
+            'user_rating': random.randint(1, 5),
+            'batch_id': batch_id,
+            'ingestion_timestamp': ingestion_timestamp
         }
 
         # Inject random messiness
@@ -51,7 +55,6 @@ def generate_messy_data(rows=100):
         if random.random() < 0.10:
             record['user_rating'] = 99
 
-        # Make email messy in different ways
         email_issue = random.random()
 
         if email_issue < 0.08:
@@ -78,6 +81,5 @@ def generate_messy_data(rows=100):
 
     return df
 
-# Example
 messy_df = generate_messy_data(20)
 print(messy_df.head(20))
