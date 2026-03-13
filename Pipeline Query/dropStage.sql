@@ -1,0 +1,1 @@
+TRUNCATE TABLE transform.sql_db.staging_bronze
